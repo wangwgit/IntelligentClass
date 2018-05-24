@@ -44,15 +44,15 @@ public class AssetsConfigControllerTest {
 
     @Test
     public void bind() throws  Exception{
-//        RequestBuilder requestBuilder=get("/pc/assetsConfig/bind")
-//                .param("assetsId","111");
-//        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-//        int status = mvcResult.getResponse().getStatus();
-//
-//        assertTrue("状态不是200",status==200);
-//        String resout= mvcResult.getResponse().getContentAsString();
-//        APIResult apiResult=JSONObject.parseObject(resout,APIResult.class);
-//        assertTrue(apiResult.getCode()==0);
+        RequestBuilder requestBuilder=get("/pc/assetsConfig/bind")
+                .param("assetsId","111");
+        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+
+        assertTrue("状态不是200",status==200);
+        String resout= mvcResult.getResponse().getContentAsString();
+        APIResult apiResult=JSONObject.parseObject(resout,APIResult.class);
+        assertTrue(apiResult.getCode()==0);
     }
 
     @Test
