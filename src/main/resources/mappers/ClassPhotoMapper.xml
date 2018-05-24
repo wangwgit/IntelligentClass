@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tiye.IntelligentClass.dao.ClassPhotoMapper" >
+  <resultMap id="BaseResultMap" type="com.tiye.IntelligentClass.model.ClassPhoto" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="xx" property="xx" jdbcType="VARCHAR" />
+    <result column="nj" property="nj" jdbcType="VARCHAR" />
+    <result column="bj" property="bj" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, content, xx, nj, bj, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from class_photo
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <sql id="page_list_where">
+    where 1=1
+    <if test="title != null and title!=''">
+      and  title like '%${title}%'
+    </if>
+    <if test="content != null and content!=''">
+      and  content like '%${content}%'
+    </if>
+    <if test="xxJbxxId != null and xxJbxxId!=''">
+      and  xx = #{xxJbxxId}
+    </if>
+    <if test="xxNjxxId != null and xxNjxxId!=''">
+      and  nj = #{xxNjxxId}
+    </if>
+    <if test="xxBjxxId != null and xxBjxxId!=''">
+      and  bj = #{xxBjxxId}
+    </if>
+    <if test="startTime != null and startTime!=''">
+      <![CDATA[
+		  and STR_TO_DATE(create_time, '%Y-%m-%d %H:%i:%s') >= STR_TO_DATE(#{startTime}, '%Y-%m-%d %H:%i:%s')
+	  ]]>
+    </if>
+    <if test="endTime!=null and endTime!=''">
+      <![CDATA[
+		  and STR_TO_DATE(create_time, '%Y-%m-%d %H:%i:%s') <= STR_TO_DATE(#{endTime}, '%Y-%m-%d %H:%i:%s')
+	  ]]>
+    </if>
+  </sql>
+  <select id="getPhotoCount" parameterType="map" resultType="java.lang.Integer">
+    select
+      count(*)
+    from class_photo
+    <include refid="page_list_where"/>
+  </select>
+  <select id="getPhotoData" parameterType="map" resultMap="BaseResultMap">
+      select
+        <include refid="Base_Column_List"/>
+      from class_photo
+      <include refid="page_list_where"/>
+      order by create_time desc
+      limit ${start},${rows}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    DELETE  from class_photo
+     where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.tiye.IntelligentClass.model.ClassPhoto" useGeneratedKeys="true" keyProperty="id" >
+    insert into class_photo (
+      title,
+      content,
+      xx,
+      nj,
+      bj,
+      create_time
+     ) values (
+      #{title,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR},
+      #{xx,jdbcType=VARCHAR},
+      #{nj,jdbcType=VARCHAR},
+      #{bj,jdbcType=VARCHAR},
+      #{createTime,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.tiye.IntelligentClass.model.ClassPhoto" >
+    update class_photo
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="xx != null" >
+        xx = #{xx,jdbcType=VARCHAR},
+      </if>
+      <if test="nj != null" >
+        nj = #{nj,jdbcType=VARCHAR},
+      </if>
+      <if test="bj != null" >
+        bj = #{bj,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
